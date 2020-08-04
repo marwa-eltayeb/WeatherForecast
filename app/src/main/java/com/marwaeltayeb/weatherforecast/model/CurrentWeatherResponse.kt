@@ -3,7 +3,7 @@ package com.marwaeltayeb.weatherforecast.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Root(
+data class CurrentWeatherResponse(
 
     @SerializedName("coord")
     val coord: Coord,
