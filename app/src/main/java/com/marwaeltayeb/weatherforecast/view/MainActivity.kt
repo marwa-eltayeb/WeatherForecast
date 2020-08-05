@@ -1,24 +1,19 @@
 package com.marwaeltayeb.weatherforecast.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.marwaeltayeb.weatherforecast.R
-import com.marwaeltayeb.weatherforecast.data.RetrofitClient
-import com.marwaeltayeb.weatherforecast.model.CurrentWeatherResponse
-import com.marwaeltayeb.weatherforecast.utils.Constant
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.marwaeltayeb.weatherforecast.model.MainContract
+import com.marwaeltayeb.weatherforecast.presenter.MainPresenter
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var textView: TextView
+    private lateinit var presenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,18 +21,17 @@ class MainActivity : AppCompatActivity() {
 
         textView = findViewById(R.id.weatherData)
 
-        RetrofitClient.getWeatherService().getWeatherData("alexandria,eg", "metric", Constant.API_KEY)
-            .enqueue(object : Callback<CurrentWeatherResponse> {
-                override fun onFailure(call: Call<CurrentWeatherResponse>, t: Throwable) {
-                    Log.d(TAG, t.message.toString())
-                }
+        presenter = MainPresenter(this)
+        presenter.startLoadingData()
 
-                override fun onResponse(call: Call<CurrentWeatherResponse>, response: Response<CurrentWeatherResponse>) {
-                    if (response.isSuccessful){
-                        textView.text = response.body().toString()
-                    }
-                }
-            })
+    }
+
+    override fun onLoadFinished(currentWeatherResponse: String) {
+        textView.text = currentWeatherResponse
+    }
+
+    override fun onLoadFailed(error: String) {
+        Log.d(TAG, error)
     }
 }
 
