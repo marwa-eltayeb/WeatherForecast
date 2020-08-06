@@ -1,6 +1,7 @@
 package com.marwaeltayeb.weatherforecast.presenter
 
 import com.marwaeltayeb.weatherforecast.WeatherCallback
+import com.marwaeltayeb.weatherforecast.model.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.model.MainContract
 import com.marwaeltayeb.weatherforecast.model.MainModel
 
@@ -18,7 +19,7 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter {
 
         // 2 load WeatherData From Server
         model.loadWeatherDataFromServer(object : WeatherCallback{
-            override fun onLoadSuccess(currentWeatherResponse: String) {
+            override fun onLoadSuccess(currentWeatherResponse: CurrentWeatherResponse?) {
                 // Pass data to view
                 view.onLoadFinished(currentWeatherResponse)
             }
@@ -27,6 +28,7 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter {
                 // Pass errorMessage to view
                 view.onLoadFailed(errorMessage!!)
             }
+
 
         })
     }

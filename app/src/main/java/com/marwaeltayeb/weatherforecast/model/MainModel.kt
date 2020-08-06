@@ -18,7 +18,7 @@ class MainModel : MainContract.Model {
 
                 override fun onResponse(call: Call<CurrentWeatherResponse>, response: Response<CurrentWeatherResponse>) {
                     if (response.isSuccessful){
-                        callback.onLoadSuccess(response.body().toString())
+                        callback.onLoadSuccess(response.body())
                     }
                 }
             })

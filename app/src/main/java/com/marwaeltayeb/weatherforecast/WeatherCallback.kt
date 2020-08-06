@@ -1,7 +1,9 @@
 package com.marwaeltayeb.weatherforecast
 
+import com.marwaeltayeb.weatherforecast.model.CurrentWeatherResponse
+
 
 interface WeatherCallback {
-    fun onLoadSuccess(currentWeatherResponse: String)
+    fun onLoadSuccess(currentWeatherResponse: CurrentWeatherResponse?)
     fun onLoadFailure(errorMessage: String?)
 }

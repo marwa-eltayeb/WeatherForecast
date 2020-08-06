@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.marwaeltayeb.weatherforecast.R
+import com.marwaeltayeb.weatherforecast.model.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.model.MainContract
 import com.marwaeltayeb.weatherforecast.presenter.MainPresenter
 
@@ -26,8 +27,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     }
 
-    override fun onLoadFinished(currentWeatherResponse: String) {
-        textView.text = currentWeatherResponse
+    override fun onLoadFinished(currentWeatherResponse: CurrentWeatherResponse?) {
+        if (currentWeatherResponse != null) {
+            //textView.text = currentWeatherResponse.main.tempMax.toString()
+            textView.text = currentWeatherResponse.weather[0].description
+        }
     }
 
     override fun onLoadFailed(error: String) {

@@ -8,7 +8,7 @@ class MainContract {
     }
 
     interface View {
-        fun onLoadFinished(currentWeatherResponse: String)
+        fun onLoadFinished(currentWeatherResponse: CurrentWeatherResponse?)
         fun onLoadFailed(error: String)
     }
 
