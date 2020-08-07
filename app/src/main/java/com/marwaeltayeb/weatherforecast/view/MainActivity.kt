@@ -3,7 +3,6 @@ package com.marwaeltayeb.weatherforecast.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -25,6 +24,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var txtWeatherDescription:TextView
     private lateinit var txtLocation:TextView
     private lateinit var txtLastUpdated:TextView
+    private lateinit var currentWeatherLayout:LinearLayout
 
     private lateinit var presenter: MainPresenter
 
@@ -38,6 +38,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         txtWeatherDescription = findViewById(R.id.txtWeatherDescription)
         txtLocation = findViewById(R.id.txtLocation)
         txtLastUpdated = findViewById(R.id.txtLastUpdated)
+        currentWeatherLayout = findViewById(R.id.currentWeatherLayout)
+        currentWeatherLayout.setOnClickListener {
+            Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_SHORT).show()
+            intent = Intent(applicationContext, DetailsActivity::class.java)
+            startActivity(intent)
+        }
 
         presenter = MainPresenter(this)
         presenter.startLoadingData()
