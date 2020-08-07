@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Weather Forecast</string>
+    <string name="temperature">%d\u00b0</string>
+    <string name="high_temperature">%d\u00b0/</string>
+    <string name="low_temperature">%d\u00b0</string>
+    <string name="lastUpdated">Last updated: %s</string>
+    <string name="weather_icon">weather icon</string>
 </resources>
