@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif"
+        android:gravity="start"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        tools:text="Tomorrow, Aug 7" />
+
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/weather_icon"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:src="@drawable/art_clouds"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/txtHighTemperature"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight=".5"
+        android:fontFamily="sans-serif-light"
+        android:gravity="end"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        tools:text="31\u00b0/" />
+
+    <TextView
+        android:id="@+id/txtLowTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:gravity="end"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        tools:text="24\u00b0" />
+</LinearLayout>
