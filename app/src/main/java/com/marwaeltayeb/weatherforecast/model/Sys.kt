@@ -2,6 +2,7 @@ package com.marwaeltayeb.weatherforecast.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Sys(
     @SerializedName("type")
@@ -18,4 +19,4 @@ data class Sys(
 
     @SerializedName("sunset")
     val sunset: Int
-)
+): Serializable

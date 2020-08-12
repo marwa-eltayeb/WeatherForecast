@@ -2,6 +2,7 @@ package com.marwaeltayeb.weatherforecast.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Wind(
     @SerializedName("speed")
@@ -9,4 +10,4 @@ data class Wind(
 
     @SerializedName("deg")
     val deg: Int
-)
+): Serializable

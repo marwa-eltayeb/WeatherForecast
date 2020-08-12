@@ -2,6 +2,7 @@ package com.marwaeltayeb.weatherforecast.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Main(
     @SerializedName("feels_like")
@@ -21,4 +22,4 @@ data class Main(
 
     @SerializedName("temp_min")
     val tempMin: Double
-)
+): Serializable

@@ -1,6 +1,6 @@
 package com.marwaeltayeb.weatherforecast.model
 
-
+import java.io.Serializable
 import com.google.gson.annotations.SerializedName
 
 data class CurrentWeatherResponse(
@@ -45,4 +45,4 @@ data class CurrentWeatherResponse(
     val cod: Int
 
 
-)
+): Serializable
