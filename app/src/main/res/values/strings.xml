@@ -5,4 +5,6 @@
     <string name="low_temperature">%d\u00b0</string>
     <string name="lastUpdated">Last updated: %s</string>
     <string name="weather_icon">weather icon</string>
+
+    <string name="hourly_temperature">%d\u00b0</string>
 </resources>

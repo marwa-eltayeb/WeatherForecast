@@ -90,12 +90,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         txtLocation = findViewById(R.id.txtLocation)
         txtLastUpdated = findViewById(R.id.txtLastUpdated)
         currentWeatherLayout = findViewById(R.id.currentWeatherLayout)
-        currentWeatherLayout.setOnClickListener {
-            Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_SHORT).show()
-            intent = Intent(applicationContext, DetailsActivity::class.java)
-            startActivity(intent)
-        }
-
 
         presenter = MainPresenter(this)
         presenter.startLoadingData()
@@ -113,6 +107,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             txtLocation.text = currentWeatherResponse.name
             val lastUpdated = getString(R.string.lastUpdated, Time.timeConverter(currentWeatherResponse.dt))
             txtLastUpdated.text = lastUpdated
+
+            currentWeatherLayout.setOnClickListener {
+                Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_SHORT).show()
+                intent = Intent(applicationContext, DetailsActivity::class.java)
+                intent.putExtra(Constant.CURRENT_WEATHER, currentWeatherResponse)
+                startActivity(intent)
+            }
         }
     }
 

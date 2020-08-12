@@ -5,5 +5,7 @@ class Constant {
         const val API_KEY = "0bf66bebfd1918a78189acae5793d9f8"
         const val UNIT_NAME = "metric"
         const val CITY_NAME = "alexandria,eg"
+
+        const val CURRENT_WEATHER = "weather"
     }
 }
