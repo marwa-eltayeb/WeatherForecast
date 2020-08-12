@@ -7,10 +7,18 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.marwaeltayeb.weatherforecast.R
+import com.marwaeltayeb.weatherforecast.adapter.DailyWeatherAdapter
+import com.marwaeltayeb.weatherforecast.adapter.HourlyWeatherAdapter
 import com.marwaeltayeb.weatherforecast.model.CurrentWeatherResponse
+import com.marwaeltayeb.weatherforecast.model.FakeDaily
+import com.marwaeltayeb.weatherforecast.model.FakeHourly
 import com.marwaeltayeb.weatherforecast.model.MainContract
 import com.marwaeltayeb.weatherforecast.presenter.MainPresenter
+import com.marwaeltayeb.weatherforecast.utils.Constant
 import com.marwaeltayeb.weatherforecast.utils.Time
 
 
@@ -32,6 +40,49 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val hourlyRecyclerView = findViewById<RecyclerView>(R.id.rcHourlyWeatherList)
+        val horizontalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        hourlyRecyclerView.layoutManager = horizontalLayoutManager
+        hourlyRecyclerView.setHasFixedSize(true)
+
+        val listOfHourlyWeather: ArrayList<FakeHourly> = ArrayList()
+        listOfHourlyWeather.add(FakeHourly("3:00", "D:", 45.3))
+        listOfHourlyWeather.add(FakeHourly("4:00", "A:", 64.2))
+        listOfHourlyWeather.add(FakeHourly("5:00", "N:", 23.5))
+        listOfHourlyWeather.add(FakeHourly("6:00", "D:", 11.3))
+        listOfHourlyWeather.add(FakeHourly("7:00", "A:", 78.2))
+        listOfHourlyWeather.add(FakeHourly("8:00", "N:", 34.5))
+        listOfHourlyWeather.add(FakeHourly("9:00", "A:", 43.2))
+        listOfHourlyWeather.add(FakeHourly("10:00", "N:", 30.5))
+        listOfHourlyWeather.add(FakeHourly("11:00", "N:", 45.5))
+
+        val dividerItemDecoration = DividerItemDecoration(hourlyRecyclerView.context, horizontalLayoutManager.orientation)
+        hourlyRecyclerView.addItemDecoration(dividerItemDecoration)
+
+        val mHourlyWeatherAdapter = HourlyWeatherAdapter(listOfHourlyWeather,this)
+        hourlyRecyclerView.adapter = mHourlyWeatherAdapter
+
+
+        //..................................
+
+        val dailyRecyclerView = findViewById<RecyclerView>(R.id.rcDailyWeatherList)
+        val verticalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        dailyRecyclerView.layoutManager = verticalLayoutManager
+        dailyRecyclerView.setHasFixedSize(true)
+
+        val listOfDailyWeather: ArrayList<FakeDaily> = ArrayList()
+        listOfDailyWeather.add(FakeDaily("Tomorrow, Aug 7", "D:", 45.3, 23.5))
+        listOfDailyWeather.add(FakeDaily("Str, Aug 8", "A:", 64.2, 13.45))
+        listOfDailyWeather.add(FakeDaily("Sun, Aug 9", "N:", 23.5, 43.4))
+        listOfDailyWeather.add(FakeDaily("Mon, Aug 10", "D:", 11.3, 34.5))
+        listOfDailyWeather.add(FakeDaily("Tue, Aug 11", "A:", 78.2, 24.5))
+
+        val verticalItemDecoration = DividerItemDecoration(hourlyRecyclerView.context, verticalLayoutManager.orientation)
+        dailyRecyclerView.addItemDecoration(verticalItemDecoration)
+
+        val mDailyWeatherAdapter = DailyWeatherAdapter(listOfDailyWeather,this)
+        dailyRecyclerView.adapter = mDailyWeatherAdapter
+
         txtTemperature = findViewById(R.id.txtTemperature)
         txtHighTemperature = findViewById(R.id.txtHighTemperature)
         txtLowTemperature = findViewById(R.id.txtLowTemperature)
@@ -44,6 +95,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             intent = Intent(applicationContext, DetailsActivity::class.java)
             startActivity(intent)
         }
+
 
         presenter = MainPresenter(this)
         presenter.startLoadingData()
