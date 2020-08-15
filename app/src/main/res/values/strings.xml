@@ -7,4 +7,5 @@
     <string name="weather_icon">weather icon</string>
 
     <string name="hourly_temperature">%d\u00b0</string>
+    <string name="current_weather">Current Weather</string>
 </resources>
