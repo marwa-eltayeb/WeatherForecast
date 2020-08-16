@@ -5,19 +5,22 @@
     <string name="low_temperature">%d\u00b0</string>
     <string name="lastUpdated">Last updated: %s</string>
     <string name="weather_icon">weather icon</string>
-
     <string name="hourly_temperature">%d\u00b0</string>
+
     <string name="current_weather">Current Weather</string>
 
     <string name="feelsLike">Feels Like %d\u00b0</string>
-
     <string name="wind">%s %d Km/h</string>
-
     <string name="humidity">%d %%</string>
-
     <string name="pressure">%d mbar</string>
-
     <string name="visibility">%d km</string>
-
     <string name="clouds">%d %%</string>
+
+    <string name="wind_text">Wind</string>
+    <string name="humidity_text">Humidity</string>
+    <string name="pressure_text">Pressure</string>
+    <string name="visibility_text">Visibility</string>
+    <string name="clouds_text">Clouds</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
 </resources>

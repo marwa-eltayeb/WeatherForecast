@@ -51,7 +51,7 @@
         android:layout_gravity="center"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:text="Feels Like 25\u00b0" />
+        tools:text="Feels Like 25\u00b0" />
 
     <TextView
         android:id="@+id/txtDescription"
@@ -79,7 +79,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
             android:textSize="25sp"
-            android:text="Wind" />
+            android:text="@string/wind_text" />
 
         <TextView
             android:id="@+id/txtWind"
@@ -89,7 +89,7 @@
             android:gravity="end"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="22sp"
             tools:text="NW 18 km/h" />
     </LinearLayout>
 
@@ -115,7 +115,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
             android:textSize="25sp"
-            android:text="Humidity" />
+            android:text="@string/humidity_text" />
 
         <TextView
             android:id="@+id/txtHumidity"
@@ -151,7 +151,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
             android:textSize="25sp"
-            android:text="Pressure" />
+            android:text="@string/pressure_text" />
 
         <TextView
             android:id="@+id/txtPressure"
@@ -187,7 +187,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
             android:textSize="25sp"
-            android:text="Visibility" />
+            android:text="@string/visibility_text" />
 
         <TextView
             android:id="@+id/txtVisibility"
@@ -223,7 +223,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
             android:textSize="25sp"
-            android:text="Clouds" />
+            android:text="@string/clouds_text" />
 
         <TextView
             android:id="@+id/txtClouds"
@@ -259,7 +259,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
             android:textSize="25sp"
-            android:text="Sunrise" />
+            android:text="@string/sunrise" />
 
         <TextView
             android:id="@+id/txtSunRise"
@@ -295,7 +295,7 @@
             android:fontFamily="sans-serif-light"
             android:textColor="@color/white"
             android:textSize="25sp"
-            android:text="Sunset" />
+            android:text="@string/sunset" />
 
         <TextView
             android:id="@+id/txtSunSet"
