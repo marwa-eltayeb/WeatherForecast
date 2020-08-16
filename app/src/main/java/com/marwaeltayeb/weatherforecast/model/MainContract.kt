@@ -1,6 +1,7 @@
 package com.marwaeltayeb.weatherforecast.model
 
 import com.marwaeltayeb.weatherforecast.WeatherCallback
+import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 
 class MainContract {
     interface Model {

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.marwaeltayeb.weatherforecast.R
 import com.marwaeltayeb.weatherforecast.adapter.DailyWeatherAdapter
 import com.marwaeltayeb.weatherforecast.adapter.HourlyWeatherAdapter
-import com.marwaeltayeb.weatherforecast.model.CurrentWeatherResponse
+import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.model.FakeDaily
 import com.marwaeltayeb.weatherforecast.model.FakeHourly
 import com.marwaeltayeb.weatherforecast.model.MainContract

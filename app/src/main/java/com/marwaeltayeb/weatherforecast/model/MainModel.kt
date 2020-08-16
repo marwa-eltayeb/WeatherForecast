@@ -2,6 +2,7 @@ package com.marwaeltayeb.weatherforecast.model
 
 import com.marwaeltayeb.weatherforecast.WeatherCallback
 import com.marwaeltayeb.weatherforecast.data.RetrofitClient
+import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback

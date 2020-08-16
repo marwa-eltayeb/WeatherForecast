@@ -4,16 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.marwaeltayeb.weatherforecast.R
-import com.marwaeltayeb.weatherforecast.model.CurrentWeatherResponse
+import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.utils.Constant
 import com.marwaeltayeb.weatherforecast.utils.Time
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import java.util.*
 
 private const val TAG = "DetailsActivity"
 

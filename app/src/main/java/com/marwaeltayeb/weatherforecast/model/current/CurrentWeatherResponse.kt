@@ -1,4 +1,4 @@
-package com.marwaeltayeb.weatherforecast.model
+package com.marwaeltayeb.weatherforecast.model.current
 
 import java.io.Serializable
 import com.google.gson.annotations.SerializedName

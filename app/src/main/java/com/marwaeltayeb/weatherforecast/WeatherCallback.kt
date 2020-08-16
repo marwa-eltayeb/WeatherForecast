@@ -1,6 +1,6 @@
 package com.marwaeltayeb.weatherforecast
 
-import com.marwaeltayeb.weatherforecast.model.CurrentWeatherResponse
+import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 
 
 interface WeatherCallback {

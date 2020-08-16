@@ -1,7 +1,7 @@
 package com.marwaeltayeb.weatherforecast.presenter
 
 import com.marwaeltayeb.weatherforecast.WeatherCallback
-import com.marwaeltayeb.weatherforecast.model.CurrentWeatherResponse
+import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.model.MainContract
 import com.marwaeltayeb.weatherforecast.model.MainModel
 
