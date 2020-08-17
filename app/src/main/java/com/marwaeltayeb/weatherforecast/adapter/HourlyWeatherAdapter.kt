@@ -1,6 +1,7 @@
 package com.marwaeltayeb.weatherforecast.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.marwaeltayeb.weatherforecast.R
-import com.marwaeltayeb.weatherforecast.model.FakeHourly
+import com.marwaeltayeb.weatherforecast.model.details.Hourly
+import com.marwaeltayeb.weatherforecast.utils.Time
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 
 
-class HourlyWeatherAdapter(private val hourlyDataList: ArrayList<FakeHourly>, private val context: Context) : RecyclerView.Adapter<HourlyWeatherAdapter.HourlyWeatherHolder>() {
+class HourlyWeatherAdapter(private val hourlyDataList: List<Hourly>, private val context: Context) : RecyclerView.Adapter<HourlyWeatherAdapter.HourlyWeatherHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourlyWeatherHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -20,12 +24,26 @@ class HourlyWeatherAdapter(private val hourlyDataList: ArrayList<FakeHourly>, pr
     }
 
     override fun onBindViewHolder(holder: HourlyWeatherHolder, position: Int) {
-        val currentHourlyWeather: FakeHourly = hourlyDataList[position]
-        val hour: String = currentHourlyWeather.getHourInDay()
+        val currentHourlyWeather: Hourly = hourlyDataList[position]
+
+        val hour: String = Time.timeConverter(currentHourlyWeather.dt)
         holder.txtHour.text = hour
-        val icon: String = currentHourlyWeather.getIconOfWeather()
-        holder.imgIcon.setImageResource(R.drawable.art_clouds)
-        val temperature: String = context.getString(R.string.hourly_temperature, currentHourlyWeather.getTemperatureOfWeather().toInt())
+
+        val iconCode = currentHourlyWeather.weather[0].icon
+        val imageUrl = "http://openweathermap.org/img/w/$iconCode.png"
+        Picasso.get()
+            .load(imageUrl)
+            .into(holder.imgIcon, object : Callback {
+                override fun onSuccess() {
+                    Log.d("icon", "success")
+                }
+
+                override fun onError(e: Exception?) {
+                    Log.d("icon", "error")
+                }
+            })
+
+        val temperature: String = context.getString(R.string.hourly_temperature, currentHourlyWeather.temp.toInt())
         holder.txtTemperature.text = temperature
     }
 
