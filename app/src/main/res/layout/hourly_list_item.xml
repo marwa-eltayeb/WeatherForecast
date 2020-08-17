@@ -16,12 +16,12 @@
         android:layout_marginBottom="15dp"
         tools:text="6:00 PM"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/imgIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:fontFamily="sans-serif-light"
         android:src="@drawable/art_clouds"
         android:textColor="@color/white"
@@ -35,5 +35,5 @@
         android:fontFamily="sans-serif-light"
         tools:text="24\u00b0"
         android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 </LinearLayout>
