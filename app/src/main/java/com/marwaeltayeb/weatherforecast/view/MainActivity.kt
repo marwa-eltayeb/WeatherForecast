@@ -14,9 +14,10 @@ import com.marwaeltayeb.weatherforecast.R
 import com.marwaeltayeb.weatherforecast.adapter.DailyWeatherAdapter
 import com.marwaeltayeb.weatherforecast.adapter.HourlyWeatherAdapter
 import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
-import com.marwaeltayeb.weatherforecast.model.FakeDaily
-import com.marwaeltayeb.weatherforecast.model.FakeHourly
 import com.marwaeltayeb.weatherforecast.model.MainContract
+import com.marwaeltayeb.weatherforecast.model.details.Daily
+import com.marwaeltayeb.weatherforecast.model.details.FullDetailsResponse
+import com.marwaeltayeb.weatherforecast.model.details.Hourly
 import com.marwaeltayeb.weatherforecast.presenter.MainPresenter
 import com.marwaeltayeb.weatherforecast.utils.Constant
 import com.marwaeltayeb.weatherforecast.utils.Time
@@ -40,49 +41,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val hourlyRecyclerView = findViewById<RecyclerView>(R.id.rcHourlyWeatherList)
-        val horizontalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        hourlyRecyclerView.layoutManager = horizontalLayoutManager
-        hourlyRecyclerView.setHasFixedSize(true)
-
-        val listOfHourlyWeather: ArrayList<FakeHourly> = ArrayList()
-        listOfHourlyWeather.add(FakeHourly("3:00", "D:", 45.3))
-        listOfHourlyWeather.add(FakeHourly("4:00", "A:", 64.2))
-        listOfHourlyWeather.add(FakeHourly("5:00", "N:", 23.5))
-        listOfHourlyWeather.add(FakeHourly("6:00", "D:", 11.3))
-        listOfHourlyWeather.add(FakeHourly("7:00", "A:", 78.2))
-        listOfHourlyWeather.add(FakeHourly("8:00", "N:", 34.5))
-        listOfHourlyWeather.add(FakeHourly("9:00", "A:", 43.2))
-        listOfHourlyWeather.add(FakeHourly("10:00", "N:", 30.5))
-        listOfHourlyWeather.add(FakeHourly("11:00", "N:", 45.5))
-
-        val dividerItemDecoration = DividerItemDecoration(hourlyRecyclerView.context, horizontalLayoutManager.orientation)
-        hourlyRecyclerView.addItemDecoration(dividerItemDecoration)
-
-        val mHourlyWeatherAdapter = HourlyWeatherAdapter(listOfHourlyWeather,this)
-        hourlyRecyclerView.adapter = mHourlyWeatherAdapter
-
-
-        //..................................
-
-        val dailyRecyclerView = findViewById<RecyclerView>(R.id.rcDailyWeatherList)
-        val verticalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        dailyRecyclerView.layoutManager = verticalLayoutManager
-        dailyRecyclerView.setHasFixedSize(true)
-
-        val listOfDailyWeather: ArrayList<FakeDaily> = ArrayList()
-        listOfDailyWeather.add(FakeDaily("Tomorrow, Aug 7", "D:", 45.3, 23.5))
-        listOfDailyWeather.add(FakeDaily("Str, Aug 8", "A:", 64.2, 13.45))
-        listOfDailyWeather.add(FakeDaily("Sun, Aug 9", "N:", 23.5, 43.4))
-        listOfDailyWeather.add(FakeDaily("Mon, Aug 10", "D:", 11.3, 34.5))
-        listOfDailyWeather.add(FakeDaily("Tue, Aug 11", "A:", 78.2, 24.5))
-
-        val verticalItemDecoration = DividerItemDecoration(hourlyRecyclerView.context, verticalLayoutManager.orientation)
-        dailyRecyclerView.addItemDecoration(verticalItemDecoration)
-
-        val mDailyWeatherAdapter = DailyWeatherAdapter(listOfDailyWeather,this)
-        dailyRecyclerView.adapter = mDailyWeatherAdapter
-
         txtTemperature = findViewById(R.id.txtTemperature)
         txtHighTemperature = findViewById(R.id.txtHighTemperature)
         txtLowTemperature = findViewById(R.id.txtLowTemperature)
@@ -95,7 +53,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         presenter.startLoadingData()
     }
 
-    override fun onLoadFinished(currentWeatherResponse: CurrentWeatherResponse?) {
+    override fun onCurrentDataLoadFinished(currentWeatherResponse: CurrentWeatherResponse?) {
         if (currentWeatherResponse != null) {
             val temperature = getString(R.string.temperature, currentWeatherResponse.main.temp.toInt())
             txtTemperature.text = temperature
@@ -114,6 +72,39 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 intent.putExtra(Constant.CURRENT_WEATHER, currentWeatherResponse)
                 startActivity(intent)
             }
+        }
+    }
+
+    override fun onDetailedDataLoadFinished(fullDetailsResponse: FullDetailsResponse?){
+        if (fullDetailsResponse != null) {
+
+            // Get Hourly weather
+            val hourlyRecyclerView = findViewById<RecyclerView>(R.id.rcHourlyWeatherList)
+            val horizontalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            hourlyRecyclerView.layoutManager = horizontalLayoutManager
+            hourlyRecyclerView.setHasFixedSize(true)
+
+            val dividerItemDecoration = DividerItemDecoration(hourlyRecyclerView.context, horizontalLayoutManager.orientation)
+            hourlyRecyclerView.addItemDecoration(dividerItemDecoration)
+
+            val listOfHourlyWeather: List<Hourly> = fullDetailsResponse.hourly
+            val mHourlyWeatherAdapter = HourlyWeatherAdapter(listOfHourlyWeather,this)
+            hourlyRecyclerView.adapter = mHourlyWeatherAdapter
+
+
+            // Get Daily weather
+            val dailyRecyclerView = findViewById<RecyclerView>(R.id.rcDailyWeatherList)
+            val verticalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            dailyRecyclerView.layoutManager = verticalLayoutManager
+            dailyRecyclerView.setHasFixedSize(true)
+
+
+            val verticalItemDecoration = DividerItemDecoration(dailyRecyclerView.context, verticalLayoutManager.orientation)
+            dailyRecyclerView.addItemDecoration(verticalItemDecoration)
+
+            val listOfDailyWeather: List<Daily> = fullDetailsResponse.daily
+            val mDailyWeatherAdapter = DailyWeatherAdapter(listOfDailyWeather,this)
+            dailyRecyclerView.adapter = mDailyWeatherAdapter
         }
     }
 

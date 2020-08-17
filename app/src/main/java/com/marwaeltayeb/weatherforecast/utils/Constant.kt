@@ -6,6 +6,10 @@ class Constant {
         const val UNIT_NAME = "metric"
         const val CITY_NAME = "alexandria,eg"
 
+        const val LAT = 31.22
+        const val LON = 29.96
+        const val EXCLUDE = "current,minutely"
+
         const val CURRENT_WEATHER = "weather"
     }
 }

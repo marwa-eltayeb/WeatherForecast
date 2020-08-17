@@ -1,9 +1,11 @@
 package com.marwaeltayeb.weatherforecast.presenter
 
-import com.marwaeltayeb.weatherforecast.WeatherCallback
+import com.marwaeltayeb.weatherforecast.DetailedWeatherCallback
+import com.marwaeltayeb.weatherforecast.CurrentWeatherCallback
 import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.model.MainContract
 import com.marwaeltayeb.weatherforecast.model.MainModel
+import com.marwaeltayeb.weatherforecast.model.details.FullDetailsResponse
 
 class MainPresenter(view: MainContract.View) : MainContract.Presenter {
 
@@ -17,19 +19,31 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter {
 
     override fun startLoadingData() {
 
-        // 2 load WeatherData From Server
-        model.loadWeatherDataFromServer(object : WeatherCallback{
+        // load WeatherData From Server
+        model.loadCurrentWeatherData(object : CurrentWeatherCallback{
             override fun onLoadSuccess(currentWeatherResponse: CurrentWeatherResponse?) {
                 // Pass data to view
-                view.onLoadFinished(currentWeatherResponse)
+                view.onCurrentDataLoadFinished(currentWeatherResponse)
             }
 
             override fun onLoadFailure(errorMessage: String?) {
                 // Pass errorMessage to view
                 view.onLoadFailed(errorMessage!!)
             }
+        })
 
 
+        // load Detailed Data From Server
+        model.loadDetailedWeatherData(object : DetailedWeatherCallback{
+            override fun onLoadSuccess(fullDetailsResponse: FullDetailsResponse?) {
+                // Pass data to view
+                view.onDetailedDataLoadFinished(fullDetailsResponse)
+            }
+
+            override fun onLoadFailure(errorMessage: String?) {
+                // Pass errorMessage to view
+                view.onLoadFailed(errorMessage!!)
+            }
         })
     }
 }
