@@ -3,6 +3,7 @@
     package="com.marwaeltayeb.weatherforecast">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +22,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.DetailsActivity"/>
-    </application>
+        <activity android:name=".view.DetailsActivity"
+                  android:theme="@style/ActivityTheme" />
 
+        <activity android:name=".view.SettingActivity"/>
+    </application>
 </manifest>
