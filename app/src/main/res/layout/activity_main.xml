@@ -9,7 +9,6 @@
 
     <LinearLayout
         android:id="@+id/currentWeatherLayout"
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -88,6 +87,7 @@
             android:textSize="16sp" />
 
         <View
+            android:id="@+id/viewOne"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
@@ -104,6 +104,7 @@
         tools:listitem="@layout/hourly_list_item" />
 
     <View
+        android:id="@+id/viewTwo"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
