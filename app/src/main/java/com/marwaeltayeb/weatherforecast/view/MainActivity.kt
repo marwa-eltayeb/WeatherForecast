@@ -3,8 +3,6 @@ package com.marwaeltayeb.weatherforecast.view
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +24,7 @@ import com.marwaeltayeb.weatherforecast.model.details.FullDetailsResponse
 import com.marwaeltayeb.weatherforecast.model.details.Hourly
 import com.marwaeltayeb.weatherforecast.presenter.MainPresenter
 import com.marwaeltayeb.weatherforecast.utils.Constant
+import com.marwaeltayeb.weatherforecast.utils.Network
 import com.marwaeltayeb.weatherforecast.utils.Time
 
 
@@ -67,7 +65,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         viewTwo = findViewById(R.id.viewTwo)
 
         presenter = MainPresenter(this)
-        presenter.startLoadingData()
+
+        if (Network.isOnline(this)){
+            presenter.startLoadingData()
+        }else{
+            viewOne.visibility = View.GONE
+            viewTwo.visibility = View.GONE
+        }
     }
 
     override fun onCurrentDataLoadFinished(currentWeatherResponse: CurrentWeatherResponse?) {
