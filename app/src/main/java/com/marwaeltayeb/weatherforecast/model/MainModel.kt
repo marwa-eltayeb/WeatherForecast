@@ -13,7 +13,7 @@ import retrofit2.Response
 class MainModel : MainContract.Model {
 
     override fun loadCurrentWeatherData(callback: CurrentWeatherCallback) {
-        RetrofitClient.getWeatherService().getWeatherData(Constant.CITY_NAME, Constant.UNIT_NAME, Constant.API_KEY)
+        RetrofitClient.getWeatherService().getWeatherData(Constant.LAT,Constant.LON, Constant.UNIT_NAME, Constant.API_KEY)
             .enqueue(object : Callback<CurrentWeatherResponse> {
                 override fun onFailure(call: Call<CurrentWeatherResponse>, t: Throwable) {
                     callback.onLoadFailure(t.message)
