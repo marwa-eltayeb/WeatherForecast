@@ -43,4 +43,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    // Preferences
+    implementation 'androidx.preference:preference:1.0.0'
+
 }
