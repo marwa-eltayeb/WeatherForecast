@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:defaultValue="@string/unit_default"
+        android:entries="@array/settings_unit_labels"
+        android:entryValues="@array/settings_unit_values"
+        android:key="@string/unit_key"
+        android:summary="@string/celsius_label"
+        app:iconSpaceReserved="false"
+        app:allowDividerAbove="true"
+        app:allowDividerBelow="true"
+        android:title="@string/unit_label" />
+</PreferenceScreen>

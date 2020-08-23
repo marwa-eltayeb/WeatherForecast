@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_unit_labels">
+        <item>@string/celsius_label</item>
+        <item>@string/fahrenheit_label</item>
+
+</string-array>
+
+    <string-array name="settings_unit_values">
+        <item>@string/celsius_value</item>
+        <item>@string/fahrenheit_value</item>
+    </string-array>
+</resources>

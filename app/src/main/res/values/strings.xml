@@ -24,4 +24,18 @@
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
     <string name="setting">Setting</string>
+
+    <!--Settings For Units Preference-->
+    <string name="unit_default">metric</string>
+    <string name="unit_key">unit</string>
+    <string name="unit_label">Units</string>
+
+    <!--Unit Label-->
+    <string name="celsius_label">\u00b0C</string>
+    <string name="fahrenheit_label">\u00b0F</string>
+
+
+    <!--Unit Values-->
+    <string name="celsius_value">metric</string>
+    <string name="fahrenheit_value">imperial</string>
 </resources>

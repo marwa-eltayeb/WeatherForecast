@@ -1,8 +1,7 @@
 package com.marwaeltayeb.weatherforecast.view
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -10,7 +9,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +32,7 @@ import com.marwaeltayeb.weatherforecast.utils.Time
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), MainContract.View {
+class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var txtTemperature: TextView
     private lateinit var txtHighTemperature: TextView
@@ -44,7 +46,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var presenter: MainPresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    companion object {
+        var unit: String? = null
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -53,6 +59,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         // Set the action bar title and elevation
         actionBar!!.title = ""
         actionBar.elevation = 0.0F
+
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        unit = sharedPreferences.getString(getString(R.string.unit_key), getString(R.string.celsius_value))
+        Toast.makeText(applicationContext, unit, LENGTH_LONG).show()
 
         txtTemperature = findViewById(R.id.txtTemperature)
         txtHighTemperature = findViewById(R.id.txtHighTemperature)
@@ -72,6 +82,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             viewOne.visibility = View.GONE
             viewTwo.visibility = View.GONE
         }
+
+        // Register the listener
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .registerOnSharedPreferenceChangeListener(this);
     }
 
     override fun onCurrentDataLoadFinished(currentWeatherResponse: CurrentWeatherResponse?) {
@@ -159,6 +173,18 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key.equals(getString(R.string.unit_key))) {
+            presenter.startLoadingData()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .unregisterOnSharedPreferenceChangeListener(this)
     }
 }
 

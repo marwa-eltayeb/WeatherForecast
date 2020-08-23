@@ -22,9 +22,22 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.DetailsActivity"
-                  android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".view.DetailsActivity"
+            android:theme="@style/ActivityTheme"
+            android:parentActivityName=".view.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.MainActivity" />
+        </activity>
 
-        <activity android:name=".view.SettingActivity"/>
+        <activity
+            android:name=".view.SettingActivity"
+            android:label="@string/setting"
+            android:parentActivityName=".view.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.MainActivity" />
+        </activity>
     </application>
 </manifest>
