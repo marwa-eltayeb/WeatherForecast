@@ -1,7 +1,13 @@
 package com.marwaeltayeb.weatherforecast.view
 
+import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,7 +17,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.marwaeltayeb.weatherforecast.R
 import com.marwaeltayeb.weatherforecast.adapter.DailyWeatherAdapter
 import com.marwaeltayeb.weatherforecast.adapter.HourlyWeatherAdapter
+import com.marwaeltayeb.weatherforecast.location.LocationService
+import com.marwaeltayeb.weatherforecast.location.LocationStorage
 import com.marwaeltayeb.weatherforecast.model.MainContract
 import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.model.details.Daily
@@ -47,8 +58,12 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     private lateinit var presenter: MainPresenter
 
     companion object {
+        private const val PERMISSIONS_REQUEST_LOCATION: Int = 99
         var unit: String? = null
     }
+
+    private var locationManager : LocationManager? = null
+    private var locationService: LocationService? = null
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -62,7 +77,10 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
 
         val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         unit = sharedPreferences.getString(getString(R.string.unit_key), getString(R.string.celsius_value))
-        Toast.makeText(applicationContext, unit, LENGTH_LONG).show()
+
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
+        locationService = LocationService(this)
+        checkLocationPermission();
 
         txtTemperature = findViewById(R.id.txtTemperature)
         txtHighTemperature = findViewById(R.id.txtHighTemperature)
@@ -85,8 +103,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
 
         // Register the listener
         PreferenceManager.getDefaultSharedPreferences(this)
-            .registerOnSharedPreferenceChangeListener(this);
+            .registerOnSharedPreferenceChangeListener(this)
     }
+
 
     override fun onCurrentDataLoadFinished(currentWeatherResponse: CurrentWeatherResponse?) {
         if (currentWeatherResponse != null) {
@@ -186,6 +205,85 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         PreferenceManager.getDefaultSharedPreferences(this)
             .unregisterOnSharedPreferenceChangeListener(this)
     }
+
+    override fun onResume() {
+        super.onResume()
+        Toast.makeText(applicationContext, LocationStorage.getLoc(this).getLat() + " " + LocationStorage.getLoc(this).getLon(), LENGTH_LONG).show()
+        val lat: Double = LocationStorage.getLoc(this).getLat()!!.toDouble()
+        val lon: Double = LocationStorage.getLoc(this).getLon()!!.toDouble()
+    }
+
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                promptUserToAccept()
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    PERMISSIONS_REQUEST_LOCATION
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
+            // If request is not cancelled, the result arrays are full.
+            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                // permission was granted, yay! Do the location-related task you need to do.
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+
+                    // Request location updates
+                    locationManager?.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER,
+                        10000L,
+                        500f,
+                        locationService
+                    )
+                    locationManager?.requestLocationUpdates(
+                        LocationManager.NETWORK_PROVIDER,
+                        10000L,
+                        500f,
+                        locationService
+                    )
+                    locationManager?.requestLocationUpdates(
+                        LocationManager.PASSIVE_PROVIDER,
+                        10000L,
+                        500f,
+                        locationService
+                    )
+                }
+            } else {
+                // User refused
+                // London
+            }
+        }
+    }
+
+    private fun promptUserToAccept() {
+        AlertDialog.Builder(this)
+            .setTitle("Title")
+            .setMessage("Location")
+            .setPositiveButton(
+                "Ok") { dialogInterface: DialogInterface?, i: Int ->
+                //Prompt the user once explanation has been shown
+                ActivityCompat.requestPermissions(
+                    this@MainActivity,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    PERMISSIONS_REQUEST_LOCATION
+                )
+            }
+            .create()
+            .show()
+    }
+
 }
 
 

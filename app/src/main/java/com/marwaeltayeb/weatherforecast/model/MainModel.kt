@@ -1,13 +1,10 @@
 package com.marwaeltayeb.weatherforecast.model
 
-import android.R
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
-import androidx.preference.PreferenceManager
 import com.marwaeltayeb.weatherforecast.CurrentWeatherCallback
 import com.marwaeltayeb.weatherforecast.DetailedWeatherCallback
 import com.marwaeltayeb.weatherforecast.data.RetrofitClient
+import com.marwaeltayeb.weatherforecast.location.LocationStorage
 import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.model.details.FullDetailsResponse
 import com.marwaeltayeb.weatherforecast.utils.Constant
@@ -29,7 +26,6 @@ class MainModel : MainContract.Model {
                 override fun onResponse(call: Call<CurrentWeatherResponse>, response: Response<CurrentWeatherResponse>) {
                     if (response.isSuccessful){
                         callback.onLoadSuccess(response.body())
-                        Log.d("unit",  MainActivity.unit + " ")
                     }
                 }
             })
