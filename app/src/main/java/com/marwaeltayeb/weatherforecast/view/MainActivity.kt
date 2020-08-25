@@ -5,8 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +23,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.marwaeltayeb.weatherforecast.R
 import com.marwaeltayeb.weatherforecast.adapter.DailyWeatherAdapter
 import com.marwaeltayeb.weatherforecast.adapter.HourlyWeatherAdapter
@@ -99,6 +98,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         }else{
             viewOne.visibility = View.GONE
             viewTwo.visibility = View.GONE
+            showSnackBar()
         }
 
         // Register the listener
@@ -206,13 +206,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
             .unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        Toast.makeText(applicationContext, LocationStorage.getLoc(this).getLat() + " " + LocationStorage.getLoc(this).getLon(), LENGTH_LONG).show()
-        val lat: Double = LocationStorage.getLoc(this).getLat()!!.toDouble()
-        val lon: Double = LocationStorage.getLoc(this).getLon()!!.toDouble()
-    }
-
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -223,10 +216,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
                 promptUserToAccept()
             } else {
                 // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    PERMISSIONS_REQUEST_LOCATION
-                )
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION)
             }
         }
     }
@@ -259,18 +249,20 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
                         500f,
                         locationService
                     )
+
+
                 }
             } else {
                 // User refused
-                // London
+                val London_LAT = 51.51
+                val London_LON = -0.13
             }
         }
     }
 
     private fun promptUserToAccept() {
         AlertDialog.Builder(this)
-            .setTitle("Title")
-            .setMessage("Location")
+            .setMessage("Location permission is required to get access to weather data")
             .setPositiveButton(
                 "Ok") { dialogInterface: DialogInterface?, i: Int ->
                 //Prompt the user once explanation has been shown
@@ -284,6 +276,15 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
             .show()
     }
 
+    private fun showSnackBar() {
+        val snack: Snackbar = Snackbar.make(findViewById(android.R.id.content), resources.getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
+        snack.setAction("CLOSE") {
+            snack.dismiss()
+        }
+        snack.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+        snack.view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+        snack.show()
+    }
 }
 
 
