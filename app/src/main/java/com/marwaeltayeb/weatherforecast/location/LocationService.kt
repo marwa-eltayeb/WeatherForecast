@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 
 class LocationService(context: Context) : LocationListener {
 
+    private var isDialogShown = true
     private val TAG = "LocationService"
     private var context: Context? = null
 
@@ -35,7 +36,13 @@ class LocationService(context: Context) : LocationListener {
     }
 
     override fun onProviderDisabled(s: String?) {
-        openSettings(context)
+        Log.d(TAG, "onProviderDisabled:" + s)
+        if(isDialogShown) {
+            openSettings(context)
+            isDialogShown = false
+        }else {
+            isDialogShown = true
+        }
     }
 
     private fun openSettings(context: Context?) {
@@ -49,6 +56,5 @@ class LocationService(context: Context) : LocationListener {
                 .show()
         }
     }
-
 }
 

@@ -206,6 +206,10 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
             .unregisterOnSharedPreferenceChangeListener(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -249,13 +253,12 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
                         500f,
                         locationService
                     )
-
-
                 }
             } else {
                 // User refused
                 val London_LAT = 51.51
                 val London_LON = -0.13
+
             }
         }
     }
