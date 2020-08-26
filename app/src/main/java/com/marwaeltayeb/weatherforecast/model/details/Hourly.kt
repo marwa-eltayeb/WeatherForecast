@@ -38,5 +38,5 @@ data class Hourly(
     val weather: List<Weather>,
 
     @SerializedName("pop")
-    val pop: Int
+    val pop: Double
 )
