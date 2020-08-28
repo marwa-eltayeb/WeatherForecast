@@ -1,9 +1,11 @@
 package com.marwaeltayeb.weatherforecast.view
 
 import android.Manifest
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
@@ -13,12 +15,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.location.LocationManagerCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.marwaeltayeb.weatherforecast.R
 import com.marwaeltayeb.weatherforecast.adapter.DailyWeatherAdapter
 import com.marwaeltayeb.weatherforecast.adapter.HourlyWeatherAdapter
+import com.marwaeltayeb.weatherforecast.location.LocationCallback
 import com.marwaeltayeb.weatherforecast.location.LocationService
 import com.marwaeltayeb.weatherforecast.location.LocationStorage
 import com.marwaeltayeb.weatherforecast.model.MainContract
@@ -42,7 +44,7 @@ import com.marwaeltayeb.weatherforecast.utils.Time
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.OnSharedPreferenceChangeListener {
+class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.OnSharedPreferenceChangeListener, LocationCallback {
 
     private lateinit var txtTemperature: TextView
     private lateinit var txtHighTemperature: TextView
@@ -64,6 +66,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     private var locationManager : LocationManager? = null
     private var locationService: LocationService? = null
 
+    var lat: Double = 0.0
+    var lon: Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -78,9 +83,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         unit = sharedPreferences.getString(getString(R.string.unit_key), getString(R.string.celsius_value))
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
-        locationService = LocationService(this)
-        checkLocationPermission();
-
+        locationService = LocationService(this, this)
+        checkLocationPermission()
+        
         txtTemperature = findViewById(R.id.txtTemperature)
         txtHighTemperature = findViewById(R.id.txtHighTemperature)
         txtLowTemperature = findViewById(R.id.txtLowTemperature)
@@ -94,7 +99,11 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         presenter = MainPresenter(this)
 
         if (Network.isOnline(this)){
-            presenter.startLoadingData()
+            if(LocationStorage.getLoc(this).getLat() != null && LocationStorage.getLoc(this).getLon()  != null) {
+                lat = LocationStorage.getLoc(this).getLat()!!.toDouble()
+                lon = LocationStorage.getLoc(this).getLon()!!.toDouble()
+                presenter.startLoadingData(lat, lon)
+            }
         }else{
             viewOne.visibility = View.GONE
             viewTwo.visibility = View.GONE
@@ -129,7 +138,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
                 intent.putExtra(Constant.CURRENT_WEATHER, currentWeatherResponse)
                 startActivity(intent)
             }
-
         }
     }
 
@@ -196,7 +204,11 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key.equals(getString(R.string.unit_key))) {
-            presenter.startLoadingData()
+            if(LocationStorage.getLoc(this).getLat() != null && LocationStorage.getLoc(this).getLon()  != null){
+                presenter.startLoadingData(lat, lon)
+            }else{
+                presenter.startLoadingData(Constant.London_LAT, Constant.London_LON)
+            }
         }
     }
 
@@ -204,10 +216,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         super.onDestroy()
         PreferenceManager.getDefaultSharedPreferences(this)
             .unregisterOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun checkLocationPermission() {
@@ -241,6 +249,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
                         500f,
                         locationService
                     )
+
                     locationManager?.requestLocationUpdates(
                         LocationManager.NETWORK_PROVIDER,
                         10000L,
@@ -256,11 +265,15 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
                 }
             } else {
                 // User refused
-                val London_LAT = 51.51
-                val London_LON = -0.13
+                presenter.startLoadingData(Constant.London_LAT, Constant.London_LON)
 
             }
         }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        return LocationManagerCompat.isLocationEnabled(locationManager)
     }
 
     private fun promptUserToAccept() {
@@ -287,6 +300,13 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         snack.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
         snack.view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
         snack.show()
+    }
+
+    override fun onLocationResult() {
+        Log.d(TAG, "onChange: It's First Time")
+        lat = LocationStorage.getLoc(this).getLat()!!.toDouble()
+        lon = LocationStorage.getLoc(this).getLon()!!.toDouble()
+        presenter.startLoadingData(lat, lon)
     }
 }
 

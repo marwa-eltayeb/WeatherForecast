@@ -10,21 +10,25 @@ import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 
-class LocationService(context: Context) : LocationListener {
+class LocationService(context: Context, locationCallback :LocationCallback) : LocationListener {
 
     private var isDialogShown = true
     private val TAG = "LocationService"
     private var context: Context? = null
+    private var callback :LocationCallback
 
     init {
         this.context = context
+        this.callback = locationCallback
     }
 
     override fun onLocationChanged(location: Location?) {
-        //LocationStorage.setLocation(context,  Location(location?.latitude, location?.longitude))
-        LocationStorage.setLoc(context,  Location(location?.latitude.toString(), location?.longitude.toString()))
-        Log.d(TAG, "onLocationChanged: " + location?.latitude)
-        Log.d(TAG, "onLocationChanged: " + location?.longitude)
+        if(location?.latitude != 0.0 && location?.longitude !=0.0){
+            Log.d(TAG, "onLocationChanged: " + location?.latitude)
+            Log.d(TAG, "onLocationChanged: " + location?.longitude)
+            LocationStorage.setLoc(context,  Location(location?.latitude.toString(), location?.longitude.toString()))
+            callback.onLocationResult()
+        }
     }
 
     override fun onStatusChanged(s: String?, i: Int, bundle: Bundle?) {
@@ -36,7 +40,7 @@ class LocationService(context: Context) : LocationListener {
     }
 
     override fun onProviderDisabled(s: String?) {
-        Log.d(TAG, "onProviderDisabled:" + s)
+        Log.d(TAG, "onProviderDisabled:$s")
         if(isDialogShown) {
             openSettings(context)
             isDialogShown = false

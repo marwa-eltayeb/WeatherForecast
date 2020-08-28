@@ -8,6 +8,10 @@ class Constant {
 
         const val LAT = 31.22
         const val LON = 29.96
+
+        const val London_LAT = 51.51
+        const val London_LON = -0.13
+
         const val EXCLUDE = "current,minutely"
 
         const val CURRENT_WEATHER = "weather"

@@ -16,8 +16,8 @@ import retrofit2.Response
 
 class MainModel : MainContract.Model {
 
-    override fun loadCurrentWeatherData(callback: CurrentWeatherCallback) {
-        RetrofitClient.getWeatherService().getWeatherData(Constant.LAT,Constant.LON, MainActivity.unit!!, Constant.API_KEY)
+    override fun loadCurrentWeatherData(lat :Double, lon :Double, callback: CurrentWeatherCallback) {
+        RetrofitClient.getWeatherService().getWeatherData(lat, lon, MainActivity.unit!!, Constant.API_KEY)
             .enqueue(object : Callback<CurrentWeatherResponse> {
                 override fun onFailure(call: Call<CurrentWeatherResponse>, t: Throwable) {
                     callback.onLoadFailure(t.message)
@@ -31,8 +31,8 @@ class MainModel : MainContract.Model {
             })
     }
 
-    override fun loadDetailedWeatherData(callback: DetailedWeatherCallback) {
-        RetrofitClient.getWeatherService().getDetailedWeatherData(Constant.LAT,Constant.LON , MainActivity.unit!!,Constant.EXCLUDE,Constant.API_KEY)
+    override fun loadDetailedWeatherData(lat :Double, lon :Double, callback: DetailedWeatherCallback) {
+        RetrofitClient.getWeatherService().getDetailedWeatherData(lat ,lon , MainActivity.unit!!,Constant.EXCLUDE,Constant.API_KEY)
             .enqueue(object : Callback<FullDetailsResponse> {
                 override fun onFailure(call: Call<FullDetailsResponse>, t: Throwable) {
                     callback.onLoadFailure(t.message)

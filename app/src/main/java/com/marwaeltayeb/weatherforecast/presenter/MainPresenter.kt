@@ -17,10 +17,10 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter {
         this.model = MainModel()
     }
 
-    override fun startLoadingData() {
+    override fun startLoadingData(lat:Double, lon:Double) {
 
         // load WeatherData From Server
-        model.loadCurrentWeatherData(object : CurrentWeatherCallback{
+        model.loadCurrentWeatherData(lat, lon,object : CurrentWeatherCallback{
             override fun onLoadSuccess(currentWeatherResponse: CurrentWeatherResponse?) {
                 // Pass data to view
                 view.onCurrentDataLoadFinished(currentWeatherResponse)
@@ -34,7 +34,7 @@ class MainPresenter(view: MainContract.View) : MainContract.Presenter {
 
 
         // load Detailed Data From Server
-        model.loadDetailedWeatherData(object : DetailedWeatherCallback{
+        model.loadDetailedWeatherData(lat, lon, object : DetailedWeatherCallback{
             override fun onLoadSuccess(fullDetailsResponse: FullDetailsResponse?) {
                 // Pass data to view
                 view.onDetailedDataLoadFinished(fullDetailsResponse)

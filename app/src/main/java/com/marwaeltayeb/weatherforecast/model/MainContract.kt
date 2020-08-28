@@ -7,8 +7,8 @@ import com.marwaeltayeb.weatherforecast.model.details.FullDetailsResponse
 
 class MainContract {
     interface Model {
-        fun loadCurrentWeatherData(callback: CurrentWeatherCallback)
-        fun loadDetailedWeatherData(callback: DetailedWeatherCallback)
+        fun loadCurrentWeatherData(lat:Double, lon:Double, callback: CurrentWeatherCallback)
+        fun loadDetailedWeatherData(lat:Double, lon:Double, callback: DetailedWeatherCallback)
     }
 
     interface View {
@@ -18,6 +18,6 @@ class MainContract {
     }
 
     interface Presenter {
-        fun startLoadingData()
+        fun startLoadingData(lat:Double, lon:Double)
     }
 }
