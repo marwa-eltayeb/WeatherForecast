@@ -42,5 +42,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.MainActivity" />
         </activity>
+
+        <receiver android:name=".receiver.NetworkChangeReceiver" />
     </application>
 </manifest>

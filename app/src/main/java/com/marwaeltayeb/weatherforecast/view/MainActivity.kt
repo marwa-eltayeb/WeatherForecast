@@ -1,13 +1,14 @@
 package com.marwaeltayeb.weatherforecast.view
 
 import android.Manifest
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -37,14 +38,16 @@ import com.marwaeltayeb.weatherforecast.model.details.Daily
 import com.marwaeltayeb.weatherforecast.model.details.FullDetailsResponse
 import com.marwaeltayeb.weatherforecast.model.details.Hourly
 import com.marwaeltayeb.weatherforecast.presenter.MainPresenter
+import com.marwaeltayeb.weatherforecast.receiver.NetworkChangeReceiver
 import com.marwaeltayeb.weatherforecast.utils.Constant
 import com.marwaeltayeb.weatherforecast.utils.Network
+import com.marwaeltayeb.weatherforecast.utils.OnNetworkListener
 import com.marwaeltayeb.weatherforecast.utils.Time
 
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.OnSharedPreferenceChangeListener, LocationCallback {
+class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.OnSharedPreferenceChangeListener, LocationCallback , OnNetworkListener {
 
     private lateinit var txtTemperature: TextView
     private lateinit var txtHighTemperature: TextView
@@ -57,6 +60,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     private lateinit var viewTwo: View
 
     private lateinit var presenter: MainPresenter
+
+    private var networkReceiver: NetworkChangeReceiver? = null
+    private lateinit var snack: Snackbar;
 
     companion object {
         private const val PERMISSIONS_REQUEST_LOCATION: Int = 99
@@ -98,6 +104,16 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
 
         presenter = MainPresenter(this)
 
+        loadWeatherData()
+
+        networkReceiver = NetworkChangeReceiver(this)
+
+        // Register the listener
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .registerOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun loadWeatherData(){
         if (Network.isOnline(this)){
             if(LocationStorage.getLoc(this).getLat() != null && LocationStorage.getLoc(this).getLon()  != null) {
                 lat = LocationStorage.getLoc(this).getLat()!!.toDouble()
@@ -109,10 +125,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
             viewTwo.visibility = View.GONE
             showSnackBar()
         }
-
-        // Register the listener
-        PreferenceManager.getDefaultSharedPreferences(this)
-            .registerOnSharedPreferenceChangeListener(this)
     }
 
 
@@ -293,7 +305,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     }
 
     private fun showSnackBar() {
-        val snack: Snackbar = Snackbar.make(findViewById(android.R.id.content), resources.getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
+        snack = Snackbar.make(findViewById(android.R.id.content), resources.getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
         snack.setAction("CLOSE") {
             snack.dismiss()
         }
@@ -303,10 +315,45 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     }
 
     override fun onLocationResult() {
-        Log.d(TAG, "onChange: It's First Time")
+        Log.d(TAG, "onLocationResult: It's First Time")
         lat = LocationStorage.getLoc(this).getLat()!!.toDouble()
         lon = LocationStorage.getLoc(this).getLon()!!.toDouble()
         presenter.startLoadingData(lat, lon)
+    }
+
+    override fun onNetworkConnected() {
+        snack.dismiss()
+        loadWeatherData()
+    }
+
+    override fun onNetworkDisconnected() {
+        viewOne.visibility = View.GONE
+        viewTwo.visibility = View.GONE
+        showSnackBar()
+    }
+
+    private fun registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(networkReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        try {
+            registerNetworkBroadcastForNougat()
+        } catch (e: Exception) {
+            Log.d(TAG, "onStart: " + "already registered")
+        }
+    }
+
+    override fun onStop() {
+        try {
+            unregisterReceiver(networkReceiver)
+        } catch (e: Exception) {
+            Log.d(TAG, "onStop: " + "already unregistered")
+        }
+        super.onStop()
     }
 }
 
