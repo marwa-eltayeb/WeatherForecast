@@ -20,3 +20,6 @@ Android Weather Forecast App implemented in MVP Architecture using Kotlin that e
 - Preferences
 - Material Design
 - IntentAnimation
+
+## Screenshots
+ <img src="https://i.imgur.com/tWF0HNr.png" width="250" height="418">   <img src="https://i.imgur.com/Me0cMl0.png" width="250" height="418">   <img src="https://i.imgur.com/9WEhf6d.png" width="250" height="418">  
