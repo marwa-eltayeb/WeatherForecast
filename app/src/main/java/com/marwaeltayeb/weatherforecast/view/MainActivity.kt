@@ -43,6 +43,7 @@ import com.marwaeltayeb.weatherforecast.utils.Constant
 import com.marwaeltayeb.weatherforecast.utils.Network
 import com.marwaeltayeb.weatherforecast.utils.OnNetworkListener
 import com.marwaeltayeb.weatherforecast.utils.Time
+import maes.tech.intentanim.CustomIntent
 
 
 private const val TAG = "MainActivity"
@@ -84,6 +85,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         // Set the action bar title and elevation
         actionBar!!.title = ""
         actionBar.elevation = 0.0F
+
+        snack = Snackbar.make(findViewById(android.R.id.content), resources.getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
 
         val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         unit = sharedPreferences.getString(getString(R.string.unit_key), getString(R.string.celsius_value))
@@ -149,6 +152,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
                 intent = Intent(applicationContext, DetailsActivity::class.java)
                 intent.putExtra(Constant.CURRENT_WEATHER, currentWeatherResponse)
                 startActivity(intent)
+                CustomIntent.customType(this, "left-to-right");
             }
         }
     }
@@ -305,7 +309,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     }
 
     private fun showSnackBar() {
-        snack = Snackbar.make(findViewById(android.R.id.content), resources.getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
         snack.setAction("CLOSE") {
             snack.dismiss()
         }
@@ -327,8 +330,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     }
 
     override fun onNetworkDisconnected() {
-        viewOne.visibility = View.GONE
-        viewTwo.visibility = View.GONE
         showSnackBar()
     }
 

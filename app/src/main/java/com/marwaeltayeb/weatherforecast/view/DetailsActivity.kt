@@ -1,16 +1,18 @@
 package com.marwaeltayeb.weatherforecast.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.marwaeltayeb.weatherforecast.R
 import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
 import com.marwaeltayeb.weatherforecast.utils.Constant
 import com.marwaeltayeb.weatherforecast.utils.Time
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import maes.tech.intentanim.CustomIntent
+
 
 private const val TAG = "DetailsActivity"
 
@@ -116,8 +118,9 @@ class DetailsActivity : AppCompatActivity() {
         return "no data"
     }
 
-
+    override fun finish() {
+        super.finish()
+        CustomIntent.customType(this, "right-to-left")
+    }
 }
 
-
-//Toast.makeText(applicationContext, currentWeather!!.name, Toast.LENGTH_SHORT).show()
