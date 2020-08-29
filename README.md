@@ -19,3 +19,4 @@ Android Weather Forecast App implemented in MVP Architecture using Kotlin that e
 - RecyclerView
 - Preferences
 - Material Design
+- IntentAnimation
