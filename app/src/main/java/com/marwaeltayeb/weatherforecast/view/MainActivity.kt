@@ -122,6 +122,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
                 lat = LocationStorage.getLoc(this).getLat()!!.toDouble()
                 lon = LocationStorage.getLoc(this).getLon()!!.toDouble()
                 presenter.startLoadingData(lat, lon)
+            }else{
+                // User refused permission, London is added as a default
+                presenter.startLoadingData(Constant.London_LAT, Constant.London_LON)
             }
         }else{
             viewOne.visibility = View.GONE
@@ -210,10 +213,14 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         when (item.itemId) {
             R.id.setting -> {
                 val intent = Intent(this, SettingActivity::class.java)
-                startActivity(intent);
+                startActivity(intent)
                 return true
             }
 
+            R.id.location -> {
+                checkLocationPermission()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -282,7 +289,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
             } else {
                 // User refused
                 presenter.startLoadingData(Constant.London_LAT, Constant.London_LON)
-
             }
         }
     }

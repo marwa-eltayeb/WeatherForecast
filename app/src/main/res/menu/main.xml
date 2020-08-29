@@ -5,4 +5,10 @@
         android:id="@+id/setting"
         android:title="@string/setting"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/location"
+        android:title="@string/detect"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="ifRoom" />
 </menu>
