@@ -5,11 +5,12 @@ Android Weather Forecast App implemented in MVP Architecture using Kotlin that e
 
 - Awesome UI Interface.
 - Easy to use.
-- Get current wether data
+- Get current weather data
 - Get hourly weather data until 2 days
 - Get daily weather data until 7 days
-- Access to user's current location coordinates
+- Access to user's current location coordinates (latitude and longitude)
 - Weather data updates every 2 hours
+- Weather data in Celsius and Fahrenheit
 
 ## Libraries included:
 
