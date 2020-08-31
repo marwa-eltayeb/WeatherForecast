@@ -1,5 +1,5 @@
 # WeatherForecast
-Android Weather Forecast App implemented in MVP Architecture using Kotlin that enable users to have free access to weather data.
+Android Weather Forecast App implemented in MVP Architecture using Kotlin that enable users to have instant access to weather data.
 
 ## Features:
 
