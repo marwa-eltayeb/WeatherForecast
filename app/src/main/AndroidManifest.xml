@@ -15,9 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:resizeableActivity="false"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.MainActivity"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +30,7 @@
         <activity
             android:name=".view.DetailsActivity"
             android:theme="@style/ActivityTheme"
+            android:screenOrientation="portrait"
             android:parentActivityName=".view.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -37,6 +40,7 @@
         <activity
             android:name=".view.SettingActivity"
             android:label="@string/setting"
+            android:screenOrientation="portrait"
             android:parentActivityName=".view.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
