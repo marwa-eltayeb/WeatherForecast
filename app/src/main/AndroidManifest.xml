@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.marwaeltayeb.weatherforecast">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -47,6 +48,7 @@
                 android:value=".view.MainActivity" />
         </activity>
 
-        <receiver android:name=".receiver.NetworkChangeReceiver" />
+        <receiver android:name=".receiver.NetworkChangeReceiver"
+            tools:ignore="Instantiatable" />
     </application>
 </manifest>
