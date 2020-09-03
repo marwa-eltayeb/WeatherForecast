@@ -227,6 +227,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key.equals(getString(R.string.unit_key))) {
+            unit = sharedPreferences?.getString(getString(R.string.unit_key), getString(R.string.celsius_value))
             if(LocationStorage.getLoc(this).getLat() != null && LocationStorage.getLoc(this).getLon()  != null){
                 presenter.startLoadingData(lat, lon)
             }else{

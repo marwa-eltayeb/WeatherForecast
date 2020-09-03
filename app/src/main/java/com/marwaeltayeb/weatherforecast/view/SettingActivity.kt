@@ -3,6 +3,7 @@ package com.marwaeltayeb.weatherforecast.view
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -49,6 +50,11 @@ class SettingActivity : AppCompatActivity() {
             val preferenceString = preferences.getString(preference.key, "")
             onPreferenceChange(preference, preferenceString)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        NavUtils.navigateUpFromSameTask(this)
     }
 }
 
