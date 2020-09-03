@@ -11,11 +11,7 @@ import com.marwaeltayeb.weatherforecast.utils.OnNetworkListener
 
 class NetworkChangeReceiver(onNetworkListener: OnNetworkListener): BroadcastReceiver() {
 
-    private var networkCallback : OnNetworkListener
-
-    init{
-        this.networkCallback = onNetworkListener
-    }
+    private var networkCallback : OnNetworkListener = onNetworkListener
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (!Network.isOnline(context)) {
