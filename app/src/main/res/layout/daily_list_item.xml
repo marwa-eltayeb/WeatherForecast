@@ -28,7 +28,6 @@
         android:contentDescription="@string/weather_icon"
         android:fontFamily="sans-serif-light"
         android:gravity="center"
-        android:src="@drawable/art_clouds"
         android:textColor="@color/white" />
 
     <TextView

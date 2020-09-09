@@ -23,7 +23,6 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:fontFamily="sans-serif-light"
-        android:src="@drawable/art_clouds"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:contentDescription="@string/weather_icon" />
