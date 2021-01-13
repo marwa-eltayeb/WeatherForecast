@@ -24,10 +24,9 @@ Android Weather Forecast App implemented in MVP Architecture using Kotlin that e
 
 ## Screenshots
 
-| <img src="https://i.imgur.com/tWF0HNr.png" width="250">  | <img src="https://i.imgur.com/Me0cMl0.png" width="250">  |
-| ------------- | ------------- |
-| <img src="https://i.imgur.com/9WEhf6d.png" width="250">  | <img src="https://i.imgur.com/ecJocF6.png" width="250">  |
-
+| <img src="https://i.imgur.com/tWF0HNr.png" width="250">  | <img src="https://i.imgur.com/Me0cMl0.png" width="250"> | <img src="https://i.imgur.com/9WEhf6d.png" width="250">   
 
 
 Project Preview: [Youtube](https://youtu.be/FCpmjr6GrHU).
+
+<a href="https://galaxy.store/forecast"><img src="https://img.samsungapps.com/seller/images/badges/galaxyStore/png_big/GalaxyStore_English.png?ver=1599637432000" alt="Available on Samsung Galaxy Store"  width="380" height="80"></a>
