@@ -30,7 +30,7 @@
 
         <activity
             android:name=".view.DetailsActivity"
-            android:theme="@style/ActivityTheme"
+            android:label="@string/current_weather"
             android:screenOrientation="portrait"
             android:parentActivityName=".view.MainActivity">
             <meta-data

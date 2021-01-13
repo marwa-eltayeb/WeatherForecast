@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary"
+    android:background="?colorPrimary"
     android:padding="10dp"
     android:gravity="center"
     android:orientation="vertical">

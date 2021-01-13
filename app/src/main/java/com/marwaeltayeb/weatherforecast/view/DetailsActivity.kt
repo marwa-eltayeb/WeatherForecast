@@ -1,12 +1,18 @@
 package com.marwaeltayeb.weatherforecast.view
 
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.marwaeltayeb.weatherforecast.R
 import com.marwaeltayeb.weatherforecast.model.current.CurrentWeatherResponse
+import com.marwaeltayeb.weatherforecast.theme.ThemeManager
+import com.marwaeltayeb.weatherforecast.theme.ThemeStorage
 import com.marwaeltayeb.weatherforecast.utils.Constant
 import com.marwaeltayeb.weatherforecast.utils.Time
 import com.marwaeltayeb.weatherforecast.utils.Wind
@@ -33,7 +39,23 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeManager.setCustomizedThemes(this, ThemeStorage.getThemeColor(this))
         setContentView(R.layout.activity_details)
+
+        val actionBar = supportActionBar
+
+        // Set the action bar title and elevation
+        if (actionBar != null) {
+            actionBar.elevation = 0.0F
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            if (ThemeStorage.getThemeColor(this).equals("grey")) {
+                window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
+            }
+        }
 
         imgIcon = findViewById(R.id.imgIcon)
         txtTemperature = findViewById(R.id.txtTemperature)
@@ -101,6 +123,14 @@ class DetailsActivity : AppCompatActivity() {
     override fun finish() {
         super.finish()
         CustomIntent.customType(this, "right-to-left")
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 

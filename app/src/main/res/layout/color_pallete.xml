@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/greyColor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="#353535"
+            android:textColor="#00000000"
+            android:gravity="center"
+            android:text="grey"/>
+
+        <TextView
+            android:id="@+id/blackColor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="#000"
+            android:textColor="#00000000"
+            android:gravity="center"
+            android:text="black"/>
+
+        <TextView
+            android:id="@+id/redColor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="#F10000"
+            android:textColor="#00000000"
+            android:gravity="center"
+            android:text="red"/>
+
+
+        <TextView
+            android:id="@+id/purpleColor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="#79008E"
+            android:textColor="#00000000"
+            android:gravity="center"
+            android:text="purple"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/greenColor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="#009688"
+            android:textColor="#00000000"
+            android:gravity="center"
+            android:text="green"/>
+
+        <TextView
+            android:id="@+id/blueColor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="#00189A"
+            android:textColor="#00000000"
+            android:gravity="center"
+            android:text="blue"/>
+
+        <TextView
+            android:id="@+id/orangeColor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="#FF5722"
+            android:textColor="#00000000"
+            android:gravity="center"
+            android:text="orange"/>
+
+
+        <TextView
+            android:id="@+id/pinkColor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="#E91E63"
+            android:textColor="#00000000"
+            android:gravity="center"
+            android:text="pink"/>
+    </LinearLayout>
+</LinearLayout>

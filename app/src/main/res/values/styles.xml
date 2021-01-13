@@ -1,16 +1,53 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/darker_gray</item>
     </style>
 
-    <style name="ActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="Theme1" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#30E57E</item>
+    </style>
+
+    <style name="Theme2" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#F10000</item>
+        <item name="colorPrimaryDark">#6E0000</item>
+        <item name="colorAccent">#050505</item>
+    </style>
+
+    <style name="Theme3" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#79008E</item>
+        <item name="colorPrimaryDark">#5C006C</item>
+        <item name="colorAccent">#FFEB3B</item>
+    </style>
+
+    <style name="Theme4" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#009688</item>
+        <item name="colorPrimaryDark">#00655C</item>
+        <item name="colorAccent">#515151</item>
+    </style>
+
+    <style name="Theme5" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#00189A</item>
+        <item name="colorPrimaryDark">#00116E</item>
+        <item name="colorAccent">#FF0000</item>
+    </style>
+
+    <style name="Theme6" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#FF5722</item>
+        <item name="colorPrimaryDark">#D53300</item>
+        <item name="colorAccent">#952400</item>
+    </style>
+
+    <style name="Theme7" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#E91E63</item>
+        <item name="colorPrimaryDark">#C80145</item>
+        <item name="colorAccent">#910032</item>
     </style>
 </resources>

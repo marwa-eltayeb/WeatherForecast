@@ -1,21 +1,23 @@
 package com.marwaeltayeb.weatherforecast.view
 
 import android.Manifest
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.IntentFilter
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -39,6 +41,11 @@ import com.marwaeltayeb.weatherforecast.model.details.FullDetailsResponse
 import com.marwaeltayeb.weatherforecast.model.details.Hourly
 import com.marwaeltayeb.weatherforecast.presenter.MainPresenter
 import com.marwaeltayeb.weatherforecast.receiver.NetworkChangeReceiver
+import com.marwaeltayeb.weatherforecast.theme.ColorDialogCallback
+import com.marwaeltayeb.weatherforecast.theme.DialogManager.Companion.showCustomAlertDialog
+import com.marwaeltayeb.weatherforecast.theme.ThemeManager.Companion.setCustomizedThemes
+import com.marwaeltayeb.weatherforecast.theme.ThemeStorage.Companion.getThemeColor
+import com.marwaeltayeb.weatherforecast.theme.ThemeStorage.Companion.setThemeColor
 import com.marwaeltayeb.weatherforecast.utils.Constant
 import com.marwaeltayeb.weatherforecast.utils.Network
 import com.marwaeltayeb.weatherforecast.utils.OnNetworkListener
@@ -49,6 +56,7 @@ import maes.tech.intentanim.CustomIntent
 private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.OnSharedPreferenceChangeListener, LocationCallback , OnNetworkListener {
+
 
     private lateinit var txtTemperature: TextView
     private lateinit var txtHighTemperature: TextView
@@ -66,6 +74,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     private lateinit var snack: Snackbar;
 
     companion object {
+        private const val TAG = "MainActivity"
         private const val PERMISSIONS_REQUEST_LOCATION: Int = 99
         var unit: String? = null
     }
@@ -78,6 +87,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+        setCustomizedThemes(this, getThemeColor(this))
         setContentView(R.layout.activity_main)
 
         val actionBar = supportActionBar
@@ -86,10 +96,27 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         actionBar!!.title = ""
         actionBar.elevation = 0.0F
 
-        snack = Snackbar.make(findViewById(android.R.id.content), resources.getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            if (getThemeColor(this).equals("grey")) {
+                window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
+            }
+        }
 
-        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        unit = sharedPreferences.getString(getString(R.string.unit_key), getString(R.string.celsius_value))
+        snack = Snackbar.make(
+            findViewById(android.R.id.content),
+            resources.getString(R.string.no_internet_connection),
+            Snackbar.LENGTH_INDEFINITE
+        );
+
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+            this
+        )
+        unit = sharedPreferences.getString(
+            getString(R.string.unit_key),
+            getString(R.string.celsius_value)
+        )
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
         locationService = LocationService(this, this)
@@ -221,13 +248,37 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
                 checkLocationPermission()
                 return true
             }
+
+            R.id.theme -> {
+
+                showCustomAlertDialog(this, object : ColorDialogCallback {
+                    override fun onChosen(chosenColor: String) {
+                        if (chosenColor == getThemeColor(applicationContext)) {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Theme has already chosen",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return
+                        }
+                        Log.d(TAG, chosenColor)
+                        setThemeColor(applicationContext, chosenColor)
+                        setCustomizedThemes(applicationContext, chosenColor)
+                        recreate()
+                    }
+                })
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key.equals(getString(R.string.unit_key))) {
-            unit = sharedPreferences?.getString(getString(R.string.unit_key), getString(R.string.celsius_value))
+            unit = sharedPreferences?.getString(
+                getString(R.string.unit_key),
+                getString(R.string.celsius_value)
+            )
             if(LocationStorage.getLoc(this).getLat() != null && LocationStorage.getLoc(this).getLon()  != null){
                 presenter.startLoadingData(lat, lon)
             }else{
@@ -243,27 +294,42 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     }
 
     private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )) {
                 promptUserToAccept()
             } else {
                 // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_LOCATION)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    PERMISSIONS_REQUEST_LOCATION
+                )
             }
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             // If request is not cancelled, the result arrays are full.
             if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 // permission was granted, yay! Do the location-related task you need to do.
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
                     == PackageManager.PERMISSION_GRANTED) {
 
                     // Request location updates
@@ -303,7 +369,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         AlertDialog.Builder(this)
             .setMessage("Location permission is required to get access to weather data")
             .setPositiveButton(
-                "Ok") { dialogInterface: DialogInterface?, i: Int ->
+                "Ok"
+            ) { dialogInterface: DialogInterface?, i: Int ->
                 //Prompt the user once explanation has been shown
                 ActivityCompat.requestPermissions(
                     this@MainActivity,
@@ -319,9 +386,16 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         snack.setAction("CLOSE") {
             snack.dismiss()
         }
-        snack.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
-        snack.view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+        snack.setActionTextColor(ContextCompat.getColor(this, R.color.white))
+        snack.view.setBackgroundColor(getThemeColor(R.attr.colorAccent))
         snack.show()
+    }
+
+    @ColorInt
+    fun getThemeColor(@AttrRes attributeColor: Int): Int {
+        val value = TypedValue()
+        theme.resolveAttribute(attributeColor, value, true)
+        return value.data
     }
 
     override fun onLocationResult() {

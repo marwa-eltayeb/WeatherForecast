@@ -23,7 +23,7 @@
     <string name="clouds_text">Clouds</string>
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
-    <string name="setting">Setting</string>
+    <string name="setting">Settings</string>
 
     <!--Settings For Units Preference-->
     <string name="unit_default">metric</string>

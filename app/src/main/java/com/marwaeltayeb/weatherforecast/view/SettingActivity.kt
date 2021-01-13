@@ -1,7 +1,9 @@
 package com.marwaeltayeb.weatherforecast.view
 
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.preference.ListPreference
@@ -9,12 +11,23 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.marwaeltayeb.weatherforecast.R
+import com.marwaeltayeb.weatherforecast.theme.ThemeManager
+import com.marwaeltayeb.weatherforecast.theme.ThemeStorage
 
 
 class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeManager.setCustomizedThemes(this, ThemeStorage.getThemeColor(this))
         setContentView(R.layout.activity_setting)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            if (ThemeStorage.getThemeColor(this).equals("grey")) {
+                window.statusBarColor = resources.getColor(R.color.colorPrimaryDark)
+            }
+        }
     }
 
     // Inner Class for using a PreferenceFragment inside SettingsActivity.
