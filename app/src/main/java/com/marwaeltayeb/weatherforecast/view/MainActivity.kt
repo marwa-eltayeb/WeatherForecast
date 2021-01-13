@@ -47,16 +47,14 @@ import com.marwaeltayeb.weatherforecast.theme.ThemeManager.Companion.setCustomiz
 import com.marwaeltayeb.weatherforecast.theme.ThemeStorage.Companion.getThemeColor
 import com.marwaeltayeb.weatherforecast.theme.ThemeStorage.Companion.setThemeColor
 import com.marwaeltayeb.weatherforecast.utils.Constant
+import com.marwaeltayeb.weatherforecast.utils.DataStorage.Companion.isDataReceived
+import com.marwaeltayeb.weatherforecast.utils.DataStorage.Companion.setDataStatus
 import com.marwaeltayeb.weatherforecast.utils.Network
 import com.marwaeltayeb.weatherforecast.utils.OnNetworkListener
 import com.marwaeltayeb.weatherforecast.utils.Time
 import maes.tech.intentanim.CustomIntent
 
-
-private const val TAG = "MainActivity"
-
 class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.OnSharedPreferenceChangeListener, LocationCallback , OnNetworkListener {
-
 
     private lateinit var txtTemperature: TextView
     private lateinit var txtHighTemperature: TextView
@@ -91,8 +89,6 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         setContentView(R.layout.activity_main)
 
         val actionBar = supportActionBar
-
-        // Set the action bar title and elevation
         actionBar!!.title = ""
         actionBar.elevation = 0.0F
 
@@ -120,8 +116,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
         locationService = LocationService(this, this)
-        checkLocationPermission()
-        
+
         txtTemperature = findViewById(R.id.txtTemperature)
         txtHighTemperature = findViewById(R.id.txtHighTemperature)
         txtLowTemperature = findViewById(R.id.txtLowTemperature)
@@ -229,14 +224,12 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu to use in the action bar
         val inflater = menuInflater
         inflater.inflate(R.menu.main, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle presses on the action bar menu items
         when (item.itemId) {
             R.id.setting -> {
                 val intent = Intent(this, SettingActivity::class.java)
@@ -245,12 +238,15 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
             }
 
             R.id.location -> {
-                checkLocationPermission()
+                if(!isDataReceived(this)) {
+                    checkLocationPermission()
+                }else{
+                    Toast.makeText(this, "Location data has been received. Enjoy our service now!", Toast.LENGTH_LONG).show()
+                }
                 return true
             }
 
             R.id.theme -> {
-
                 showCustomAlertDialog(this, object : ColorDialogCallback {
                     override fun onChosen(chosenColor: String) {
                         if (chosenColor == getThemeColor(applicationContext)) {
@@ -294,11 +290,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     }
 
     private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED) {
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || !isDataReceived(this)) {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
@@ -403,6 +395,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
         lat = LocationStorage.getLoc(this).getLat()!!.toDouble()
         lon = LocationStorage.getLoc(this).getLon()!!.toDouble()
         presenter.startLoadingData(lat, lon)
+        setDataStatus(this, true)
     }
 
     override fun onNetworkConnected() {
