@@ -30,4 +30,9 @@ Android Weather Forecast App implemented in MVP Architecture using Kotlin that e
 
 Project Preview: [Youtube](https://youtu.be/FCpmjr6GrHU).
 
-<a href="https://galaxy.store/forecast"><img src="https://img.samsungapps.com/seller/images/badges/galaxyStore/png_big/GalaxyStore_English.png?ver=1599637432000" alt="Available on Samsung Galaxy Store"  width="380" height="80"></a>
+
+## Download
+
+<a href="https://galaxy.store/forecast"><img src="https://img.samsungapps.com/seller/images/badges/galaxyStore/png_big/GalaxyStore_English.png?ver=1599637432000" alt="Available on Samsung Galaxy Store" width="20%" height="60"></a>
+<a href="https://www.amazon.com/Marwa-Eltayeb-WeatherForecast/dp/B08HCWJ7KH"><img src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" alt="Amazon App Store" width="20%" height="60"></a>
+<a href="https://appgallery.huawei.com/app/C103183075"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Huawei_AppGallery_white_badge_EN.png" alt="Huawei AppGallery" width="20%" height="60"></a>
