@@ -22,7 +22,7 @@ class LocationService(context: Context, locationCallback :LocationCallback) : Lo
         this.callback = locationCallback
     }
 
-    override fun onLocationChanged(location: Location?) {
+    override fun onLocationChanged(location: Location) {
         if(location?.latitude != 0.0 && location?.longitude !=0.0){
             Log.d(TAG, "onLocationChanged: " + location?.latitude)
             Log.d(TAG, "onLocationChanged: " + location?.longitude)
@@ -31,15 +31,15 @@ class LocationService(context: Context, locationCallback :LocationCallback) : Lo
         }
     }
 
-    override fun onStatusChanged(s: String?, i: Int, bundle: Bundle?) {
+    override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {
         Log.d(TAG, "onStatusChanged:")
     }
 
-    override fun onProviderEnabled(s: String?) {
+    override fun onProviderEnabled(s: String) {
         Log.d(TAG, "onProviderEnabled:")
     }
 
-    override fun onProviderDisabled(s: String?) {
+    override fun onProviderDisabled(s: String) {
         Log.d(TAG, "onProviderDisabled:$s")
         if(isDialogShown) {
             openSettings(context)

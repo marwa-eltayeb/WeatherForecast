@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
     }
 
     private var locationManager : LocationManager? = null
-    private var locationService: LocationService? = null
+    private lateinit var locationService: LocationService
 
     var lat: Double = 0.0
     var lon: Double = 0.0
