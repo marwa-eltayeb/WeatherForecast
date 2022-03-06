@@ -158,15 +158,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
 
     override fun onCurrentDataLoadFinished(currentWeatherResponse: CurrentWeatherResponse?) {
         if (currentWeatherResponse != null) {
-            val temperature =
-                getString(R.string.temperature, currentWeatherResponse.main.temp.toInt())
+            val temperature = getString(R.string.temperature, currentWeatherResponse.main.temp.toInt())
             txtTemperature.text = temperature
-            val highTemperature =
-                getString(R.string.high_temperature, currentWeatherResponse.main.tempMax.toInt())
-            txtHighTemperature.text = highTemperature
-            val lowTemperature =
-                getString(R.string.low_temperature, currentWeatherResponse.main.tempMin.toInt())
-            txtLowTemperature.text = lowTemperature
+
             txtWeatherDescription.text = currentWeatherResponse.weather[0].description
             txtLocation.text = currentWeatherResponse.name
             val lastUpdated =
@@ -203,19 +197,22 @@ class MainActivity : AppCompatActivity(), MainContract.View, SharedPreferences.O
 
             // Get Daily weather
             val dailyRecyclerView = findViewById<RecyclerView>(R.id.rcDailyWeatherList)
-            val verticalLayoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            val verticalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             dailyRecyclerView.layoutManager = verticalLayoutManager
             dailyRecyclerView.setHasFixedSize(true)
 
 
-            val verticalItemDecoration =
-                DividerItemDecoration(dailyRecyclerView.context, verticalLayoutManager.orientation)
+            val verticalItemDecoration = DividerItemDecoration(dailyRecyclerView.context, verticalLayoutManager.orientation)
             dailyRecyclerView.addItemDecoration(verticalItemDecoration)
 
             val listOfDailyWeather: List<Daily> = fullDetailsResponse.daily
             val mDailyWeatherAdapter = DailyWeatherAdapter(listOfDailyWeather, this)
             dailyRecyclerView.adapter = mDailyWeatherAdapter
+
+            val highTemperature = getString(R.string.high_temperature, listOfDailyWeather.get(0).temp.max.toInt())
+            txtHighTemperature.text = highTemperature
+            val lowTemperature = getString(R.string.low_temperature, listOfDailyWeather.get(0).temp.min.toInt())
+            txtLowTemperature.text = lowTemperature
         }
     }
 
